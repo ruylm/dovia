@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Novo Horário</ion-title>
+    <!-- <ion-buttons end>
+      <button ion-button (click)="fecharModalMateriaHorario()">Voltar</button>
+    </ion-buttons> -->
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list>
+    <ion-list-header>
+      <b>HORÁRIO</b>
+    </ion-list-header>
+    <ion-item>
+      <ion-label>Início</ion-label>
+      <ion-datetime displayFormat="hh:mm A" [(ngModel)]="horario.inicio"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Fim</ion-label>
+      <ion-datetime displayFormat="hh:mm A" [(ngModel)]="horario.fim"></ion-datetime>
+    </ion-item>
+
+
+
+  </ion-list>
+
+  <ion-list-header>
+      <b>DIA DA SEMANA</b>
+    </ion-list-header>
+
+    <div class="weekDays-selector" style="text-align: center">
+      <input type="checkbox" id="weekday-sun" [(ngModel)]="horario.dia.dom" class="weekday" />
+      <label for="weekday-sun">D</label>
+      <input type="checkbox" id="weekday-mon" [(ngModel)]="horario.dia.seg" class="weekday" />
+      <label for="weekday-mon">S</label>
+      <input type="checkbox" id="weekday-tue" [(ngModel)]="horario.dia.ter" class="weekday" />
+      <label for="weekday-tue">T</label>
+      <input type="checkbox" id="weekday-wed" [(ngModel)]="horario.dia.qua" class="weekday" />
+      <label for="weekday-wed">Q</label>
+      <input type="checkbox" id="weekday-thu" [(ngModel)]="horario.dia.qui" class="weekday" />
+      <label for="weekday-thu">Q</label>
+      <input type="checkbox" id="weekday-fri" [(ngModel)]="horario.dia.sex" class="weekday" />
+      <label for="weekday-fri">S</label>
+      <input type="checkbox" id="weekday-sat" [(ngModel)]="horario.dia.sab" class="weekday" />
+      <label for="weekday-sat">S</label>
+    </div>
+
+    <br>
+    <button ion-button icon-left class="tamanho-botao" (click)="fecharModalMateriaHorario()">
+      <ion-icon name="md-arrow-round-back"></ion-icon>
+      Cancelar
+    </button>
+    <button ion-button icon-left class="tamanho-botao" (click)="adicionarHorario()">
+      <ion-icon name="md-thumbs-up" color="branco"></ion-icon>
+      Incluir
+    </button>
+
+</ion-content>

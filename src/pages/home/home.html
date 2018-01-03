@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar hideBackButton>
+    <ion-title text-center>Class Shot</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="card-background-page">
+
+
+  <ion-row>
+    <ion-col>
+      <button ion-button color="branco" class="button-grande" (click)="trocaPagina('FotoPage')" >
+        <ion-card>
+          <img src="assets/imgs/foto.png" />
+        </ion-card>
+      </button>
+    </ion-col>
+    <ion-col>
+      <button ion-button color="branco" class="button-grande" (click)="trocaPagina('AlbumPage')" >
+        <ion-card>
+          <img src="assets/imgs/album.png" />
+        </ion-card>
+      </button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <button ion-button color="branco" class="button-grande" (click)="trocaPagina('MateriaPage')" >
+        <ion-card>
+          <img src="assets/imgs/materias.png" />
+        </ion-card>
+      </button>
+    </ion-col>
+    <ion-col>
+      <button ion-button color="branco" class="button-grande" (click)="trocaPagina('ConfigPage')" >
+        <ion-card>
+          <img src="assets/imgs/config.png" />
+        </ion-card>
+      </button>
+    </ion-col>
+  </ion-row>
+
+</ion-content>

@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar hideBackButton>
+    <ion-title text-center>Matérias</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-list>
+
+    <ion-item (press)="exibirAcoes(materia)" *ngFor="let materia of materiasCadastradas.materias">
+      <ion-icon name="ios-school" item-start></ion-icon>
+      <h2> {{materia.nome}} </h2>
+      <h3> {{materia.professor}} </h3>
+      <p> {{materia.email}} </p>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-fab center bottom>
+    <button ion-fab (click)="abrirModalMateria()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+
+</ion-content>

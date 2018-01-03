@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Nova Matéria</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="fecharModalMateria()">Voltar</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <div>
+    <ion-list>
+      <!-- <ion-list-header>
+      <b>MATÉRIA</b>
+    </ion-list-header> -->
+      <ion-item>
+        <ion-label floating>Nome</ion-label>
+        <ion-input type="text" [(ngModel)]="materia.nome"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Professor</ion-label>
+        <ion-input type="text" [(ngModel)]="materia.professor"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>E-mail</ion-label>
+        <ion-input type="text" [(ngModel)]="materia.email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>WhatsApp</ion-label>
+        <ion-input type="text" [(ngModel)]="materia.whats"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-scroll direction="y" style="height: 230px" scrollY="true">
+      <ion-list scroll="true">
+
+        <ion-list-header>
+          <b>HORÁRIO</b>
+        </ion-list-header>
+
+        <ion-item (press)="exibirAcoesHorario(aula)" *ngFor="let aula of listaHorario">
+          <ion-icon name="ios-school" item-start></ion-icon>
+          <!-- <h2 [innerHTML]="horario.inicio"></h2>
+          <h3 [innerHTML]="horario.fim"></h3> -->
+
+          {{aula.inicio}} - {{aula.fim}}
+          <br> {{ aula.diasFormatados }}
+
+
+        </ion-item>
+
+      </ion-list>
+    </ion-scroll>
+  </div>
+
+  <div>
+    <ion-fab center>
+      <button ion-fab (click)="abrirNovoHorario()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-fab>
+  </div>
+
+  <div>
+    <ion-footer>
+      <ion-toolbar>
+        <button ion-button full (click)="salvarHorario()">Salvar</button>
+      </ion-toolbar>
+    </ion-footer>
+  </div>
+
+</ion-content>
