@@ -1,0 +1,53 @@
+<ion-header>
+
+  <!-- <ion-navbar no-border-bottom hideBackButton>
+    <ion-title>Fotos</ion-title>
+      <ion-buttons end *ngIf="opcoes === '1'">
+      <button ion-button icon-only (click)="openModal()">
+        <ion-icon name="options"></ion-icon>
+      </button>
+    </ion-buttons> 
+  </ion-navbar> -->
+
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="menu">
+      <ion-segment-button value="todas">
+        Todas
+      </ion-segment-button>
+      <ion-segment-button value="importantes">
+        Importantes
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <div [ngSwitch]="menu">
+    <ion-list *ngSwitchCase="'todas'">
+      <ion-item *ngFor="let foto of fotos" (press)="exibirAcoes(foto, 'Importante')" (click)="abrirFoto(foto)">
+        <ion-thumbnail item-start>
+          <img [src]=foto.url />
+        </ion-thumbnail>
+        <h2>{{foto.data}}</h2>
+        <p>{{foto.diaSemana}}</p>
+        <p>{{foto.periodo}}</p>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'importantes'">
+      <ion-item *ngFor="let foto of fotosImportantes" (press)="exibirAcoes(foto, 'Não Importante')" (click)="abrirFoto(foto)">
+        <ion-thumbnail item-start>
+          <img [src]=foto.url />
+        </ion-thumbnail>
+        <h2>{{foto.data}}</h2>
+        <p>{{foto.diaSemana}}</p>
+        <p>{{foto.periodo}}</p>
+      </ion-item>
+    </ion-list>
+
+  </div>
+
+</ion-content>

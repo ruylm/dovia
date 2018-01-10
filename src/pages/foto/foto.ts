@@ -1,49 +1,118 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Tabs, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { File } from '@ionic-native/file';
 
-/**
- * Generated class for the FotoPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
   selector: 'page-foto',
   templateUrl: 'foto.html',
+  providers: [
+    Camera
+  ]
 })
 export class FotoPage {
 
-      /**
-   * Declarando a variável onde será adicionado o base64 da foto
-   */
-  currentPhoto;
+  private pastaExtra: string = "Extra";
+  private pathNovo: string = this.file.dataDirectory + "csfotos/";
+  img = "";
+  tab: Tabs;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public camera: Camera) {
-    //alert('kkkkkk')
+  constructor(public navCtrl: NavController, public navParams: NavParams, public camera: Camera, private file: File, public toastCtrl: ToastController) {
+
+  }
+
+  // Esse metodo e executado sempre que a tela e exibida
+  async ionViewWillEnter() {
+    // Criando diretorio "Extra" caso nao exista.
+    //await this.verificaDiretorio(this.pathInicial, this.pastaFotos);
+    //await this.verificaDiretorio(this.pathNovo, this.pastaExtra);
+    this.tab = this.navCtrl.parent;
+    this.tirarFoto();
+  }
+
+  tirarFoto() {
+
     const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
+      quality: 50,
+      destinationType: this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
-      sourceType: "picture" == "picture" ? this.camera.PictureSourceType.CAMERA : this.camera.PictureSourceType.SAVEDPHOTOALBUM,
-      correctOrientation: true
-    };
+      saveToPhotoAlbum: false
+    }
 
-    this.camera.getPicture(options).then((imageData) => {
+    this.camera.getPicture(options).then((imagePath) => {
 
-      this.currentPhoto = 'data:image/jpeg;base64,' + imageData;
+      // Pegar nome materia pelo horario
+      //let materia: string = "cs_" + "Extra";
+
+      let pathAntigo = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+      let nomeAntigo = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+
+
+      //let nomeNovo: string = this.createFileName();
+
+      // Verifica se diretorio existe e se nao existir, ja cria ele..
+      // this.verificaDiretorio(pathNovo, materia)
+
+      // Movendo foto do diretorio padrao para o diretorio com o nome da materia
+      this.moveFileToLocalDir(pathAntigo, nomeAntigo, this.pathNovo + this.pastaExtra + "/", this.geraNomeFoto(nomeAntigo));
+
+      this.presentToast('Foto salva na matéria ' + this.pastaExtra.substr(this.pastaExtra.lastIndexOf('_') + 1));
+
+      this.tab.select(0);
 
     }, (err) => {
-      // Handle error
+      this.tab.select(0);
+      //alert('Erro ao tirar foto: ' + err)
     });
+  }
+
+
+  // Copy the image to a local folder
+  async moveFileToLocalDir(pathAntigo, nomeAntigo, pathNovo, nomeNovo) {
+    //alert("Movendo--> pathAntigo: " + pathAntigo + "    nomeAntigo: " + nomeAntigo + "    pathNovo: " + pathNovo + "    nomeNovo: " + nomeNovo);
+    try {
+      await this.file.moveFile(pathAntigo, nomeAntigo, pathNovo, nomeNovo);
+      this.img = pathNovo + nomeNovo;
+    } catch (error) {
+      this.presentToast('Erro ao mover foto para diretorio correto: ' + JSON.stringify(error));
+    }
+  }
+
+  // formato do nome da foto: data|importante
+  geraNomeFoto(nome) {
+    let nomeNovo = (nome.split(".", 1))
+    return nomeNovo + "_0.jpg"
+  }
+
+  async verificaDiretorio(pathNovo, materia) {
+
+    try {
+      //alert("Verificando: " + pathNovo + " -- " + materia)
+      await this.file.checkDir(pathNovo, materia)
+      //alert("Diretorio ja existe");
+    } catch (error) {
+      //alert("Criando dir Extra");
+      try {
+        await this.file.createDir(pathNovo, materia, false);
+      } catch (error) {
+        alert("Erro ao criar pasta " + materia + " -- " + JSON.stringify(error));
+      }
+    }
 
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad FotoPage');
+  private presentToast(text) {
+    let toast = this.toastCtrl.create({
+      message: text,
+      duration: 3000,
+      position: 'bottom',
+      cssClass: "toast"
+    });
+    toast.present();
   }
+
 
 }

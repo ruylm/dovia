@@ -5,5 +5,15 @@
 </ion-header>
 
 <ion-content padding>
-{{ nome }}
+
+  <ion-list>
+
+    <ion-item (click)="abrirGaleria(pasta)" *ngFor="let pasta of pastas">
+      <ion-icon name="ios-school" item-start></ion-icon>
+      <h2> {{ pasta }} </h2>
+      <h3 *ngIf="pasta === 'Extra'"> Fotos sem horários cadastrados</h3>
+    </ion-item>
+
+  </ion-list>
+
 </ion-content>

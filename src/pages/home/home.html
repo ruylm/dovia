@@ -6,38 +6,39 @@
 
 <ion-content class="card-background-page">
 
-
-  <ion-row>
-    <ion-col>
-      <button ion-button color="branco" class="button-grande" (click)="trocaPagina('FotoPage')" >
-        <ion-card>
-          <img src="assets/imgs/foto.png" />
-        </ion-card>
-      </button>
-    </ion-col>
-    <ion-col>
+  <ion-grid>
+    <ion-row align-items-center>
+      <ion-col col-12 align-self-start>
+        <button ion-button color="branco" class="button-menor" (click)="trocaPagina('FotoPage')">
+          <ion-card>
+            <img src="assets/imgs/foto.png" />
+          </ion-card>
+        </button>
+      </ion-col>
+      <!-- <ion-col>
       <button ion-button color="branco" class="button-grande" (click)="trocaPagina('AlbumPage')" >
         <ion-card>
           <img src="assets/imgs/album.png" />
         </ion-card>
       </button>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col>
-      <button ion-button color="branco" class="button-grande" (click)="trocaPagina('MateriaPage')" >
-        <ion-card>
-          <img src="assets/imgs/materias.png" />
-        </ion-card>
-      </button>
-    </ion-col>
-    <ion-col>
-      <button ion-button color="branco" class="button-grande" (click)="trocaPagina('ConfigPage')" >
-        <ion-card>
-          <img src="assets/imgs/config.png" />
-        </ion-card>
-      </button>
-    </ion-col>
-  </ion-row>
+    </ion-col> -->
+    </ion-row>
+    <ion-row>
+      <ion-col col-6 align-self-center>
+        <button ion-button color="branco" class="button-grande" (click)="trocaPagina('MateriaPage')">
+          <ion-card>
+            <img src="assets/imgs/album.png" />
+          </ion-card>
+        </button>
+      </ion-col>
+      <ion-col col-6 align-self-center>
+        <button ion-button color="branco" class="button-grande" (click)="trocaPagina('ConfigPage')">
+          <ion-card>
+            <img src="assets/imgs/config.png" />
+          </ion-card>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>

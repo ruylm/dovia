@@ -14,22 +14,22 @@ export class IntroPage {
     {
       title: "Bem vindo ao ClasShot!",
       description: "O <b>ClasShot</b> é um app para ajuda-lo nos seus estudos.",
-      image: "assets/imgs/intro01.png",
+      image: "assets/imgs/fundo-intro.jpg",
     },
     {
       title: "Cadastro de Matérias",
       description: "Nesse menu é possível o cadastro de suas matérias e a grade de horarios, para que as fotos sejam armazenadas conforme foram cadastradas.",
-      image: "assets/imgs/intro02.png",
+      image: "assets/imgs/fundo-intro.jpg",
     },
     {
       title: "Foto",
       description: "A opção <b>Foto</b> é utilizada para tirar um foto do quadro com a matéria passada, para evitar de ter que escrever em seu caderno.",
-      image: "assets/imgs/intro03.png",
+      image: "assets/imgs/fundo-intro.jpg",
     },
     {
       title: "Album",
       description: "Na opção <b>Album</b> voce irá encontrar todas as suas fotos separadas por materias para poder estudar futuramente.",
-      image: "assets/imgs/intro04.png",
+      image: "assets/imgs/fundo-intro.jpg",
     }
   ];
 
@@ -38,6 +38,10 @@ export class IntroPage {
   }
   irParaTabs() {
     this.navCtrl.push(TabsPage)
+    // this.navCtrl.push(TabsPage).then(() => {
+    //   const startIndex = this.navCtrl.getActive().index - 1;
+    //   this.navCtrl.remove(startIndex, 1);
+    // })
   }
 
 }

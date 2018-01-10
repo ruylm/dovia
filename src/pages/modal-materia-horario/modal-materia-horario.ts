@@ -13,8 +13,8 @@ export class ModalMateriaHorarioPage {
   public md5: Md5;
   public horario = {
     id: "",
-    inicio: "08:59",
-    fim: "10:59",
+    inicio: "08:00",
+    fim: "09:00",
     dia: [{
       dom: false,
       seg: false,

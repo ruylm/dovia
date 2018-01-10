@@ -8,11 +8,17 @@
 
   <ion-list>
 
-    <ion-item (press)="exibirAcoes(materia)" *ngFor="let materia of materiasCadastradas.materias">
+    <ion-item (click)="abrirGaleria(materia.nome)" (press)="exibirAcoes(materia)" *ngFor="let materia of materiasCadastradas.materias">
       <ion-icon name="ios-school" item-start></ion-icon>
-      <h2> {{materia.nome}} </h2>
-      <h3> {{materia.professor}} </h3>
-      <p> {{materia.email}} </p>
+      <h2>{{materia.nome}}</h2>
+      <h3>{{materia.professor}}</h3>
+      <p>{{materia.email}}</p>
+    </ion-item>
+
+    <ion-item (click)="abrirGaleria('Extra')" >
+      <ion-icon name="ios-school" item-start></ion-icon>
+      <h2>Extra</h2>
+      <p>Fotos sem horários cadastrados</p>
     </ion-item>
 
   </ion-list>

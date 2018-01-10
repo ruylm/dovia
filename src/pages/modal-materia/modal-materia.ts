@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, ViewController, ModalController, NavParams, ActionSheetController } from 'ionic-angular';
 import { DataBaseProvider } from '../../providers/database/database';
-import {Md5} from 'ts-md5/dist/md5';
+import { Md5 } from 'ts-md5/dist/md5';
+import { File } from '@ionic-native/file';
 
 @IonicPage()
 @Component({
@@ -13,6 +14,7 @@ import {Md5} from 'ts-md5/dist/md5';
 })
 export class ModalMateriaPage {
 
+  private pathNovo: string = this.file.dataDirectory + "csfotos/";
   private controleEditar;
   public materiaEditar;
   public listaHorario = [];
@@ -42,7 +44,7 @@ export class ModalMateriaPage {
     ]
   }
 
-  constructor(private view: ViewController, public actionsheetCtrl: ActionSheetController, private modal: ModalController, private dataBase: DataBaseProvider, params: NavParams) {
+  constructor(private view: ViewController, public actionsheetCtrl: ActionSheetController, private modal: ModalController, private dataBase: DataBaseProvider, params: NavParams, private file: File) {
 
     this.materiaEditar = params.get('materia');
 
@@ -79,16 +81,19 @@ export class ModalMateriaPage {
       // Adicionando no nosso objeto os horario que foram criados
       this.materia.horario = this.listaHorario;
 
-      if(this.controleEditar === false) {
-        this.materia.id = Md5.hashStr((JSON.stringify(this.materia))+new Date().toISOString()).toString();
+      if (this.controleEditar === false) {
+        this.materia.id = Md5.hashStr((JSON.stringify(this.materia)) + new Date().toISOString()).toString();
       }
+      // Verifica se pasta ja existe para salvar as fotos, senao cria.
+      this.verificaDiretorio(this.materia.nome);
+
       retornoBD.materias.push(this.materia);
 
       await this.dataBase.setMaterias(retornoBD);
 
       if (!(metodo === "deleteItem")) {
         this.view.dismiss();
-      } 
+      }
     } catch (error) {
       alert("Erro: " + error)
       console.log(error);
@@ -117,8 +122,8 @@ export class ModalMateriaPage {
         data.diasFormatados = novoHorario;
 
         this.materia.horario = (data);
+        this.listaHorario.push(this.materia.horario)
       }
-      this.listaHorario.push(this.materia.horario)
 
     })
 
@@ -175,6 +180,21 @@ export class ModalMateriaPage {
       this.listaHorario = array;
     } catch (error) {
       alert("Erro: " + error)
+    }
+  }
+
+  async verificaDiretorio(materia) {
+    try {
+      await this.file.checkDir(this.pathNovo, materia)
+      //alert("Diretorio "+materia+" ja existe");
+    } catch (error) {
+      //alert("Criando diretorio: " + materia);
+      try {
+        await this.file.createDir(this.pathNovo, materia, false);
+        //alert("Dir criado")
+      } catch (error) {
+        alert("Erro ao criar pasta " + materia + " -- " + JSON.stringify(error));
+      }
     }
   }
 

@@ -1,11 +1,11 @@
-<ion-header>
+<!-- <ion-header>
   <ion-navbar>
     <ion-title>Nova Matéria</ion-title>
     <ion-buttons end>
       <button ion-button (click)="fecharModalMateria()">Voltar</button>
     </ion-buttons>
   </ion-navbar>
-</ion-header>
+</ion-header> -->
 
 
 <ion-content padding>
@@ -16,7 +16,7 @@
       <b>MATÉRIA</b>
     </ion-list-header> -->
       <ion-item>
-        <ion-label floating>Nome</ion-label>
+        <ion-label floating>Matéria</ion-label>
         <ion-input type="text" [(ngModel)]="materia.nome"></ion-input>
       </ion-item>
       <ion-item>
@@ -25,19 +25,26 @@
       </ion-item>
       <ion-item>
         <ion-label floating>E-mail</ion-label>
-        <ion-input type="text" [(ngModel)]="materia.email"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label floating>WhatsApp</ion-label>
-        <ion-input type="text" [(ngModel)]="materia.whats"></ion-input>
+        <ion-input type="email" [(ngModel)]="materia.email"></ion-input>
       </ion-item>
     </ion-list>
 
-    <ion-scroll direction="y" style="height: 230px" scrollY="true">
+    <ion-scroll direction="y" scrollY="true" style="height: 190px">
       <ion-list scroll="true">
 
         <ion-list-header>
-          <b>HORÁRIO</b>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                  <b>HORÁRIOS</b>
+              </ion-col>
+              <ion-col offset-6 col-auto>
+                <button ion-fab (click)="abrirNovoHorario()" style="height: 25px; width: 25px" >
+                  <ion-icon name="add"></ion-icon>
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-list-header>
 
         <ion-item (press)="exibirAcoesHorario(aula)" *ngFor="let aula of listaHorario">
@@ -48,27 +55,24 @@
           {{aula.inicio}} - {{aula.fim}}
           <br> {{ aula.diasFormatados }}
 
-
         </ion-item>
 
       </ion-list>
     </ion-scroll>
   </div>
 
-  <div>
-    <ion-fab center>
-      <button ion-fab (click)="abrirNovoHorario()">
-        <ion-icon name="add"></ion-icon>
-      </button>
-    </ion-fab>
-  </div>
+  <ion-footer>
+    <ion-toolbar no-border-top>
+      <ion-grid>
 
-  <div>
-    <ion-footer>
-      <ion-toolbar>
-        <button ion-button full (click)="salvarHorario()">Salvar</button>
-      </ion-toolbar>
-    </ion-footer>
-  </div>
+        <ion-row>
+          <ion-col col-12>
+            <button ion-button full (click)="salvarHorario()">Salvar</button>
+          </ion-col>
+        </ion-row>
+
+      </ion-grid>
+    </ion-toolbar>
+  </ion-footer>
 
 </ion-content>

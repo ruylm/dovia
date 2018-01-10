@@ -12,6 +12,9 @@ import { FotoPage } from '../pages/foto/foto';
 import { IntroPage } from '../pages/intro/intro';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+
+import { File } from '@ionic-native/file';
+import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
 
 @NgModule({
@@ -43,7 +46,9 @@ import { Camera } from '@ionic-native/camera';
   providers: [
     StatusBar,
     SplashScreen,
+    File,
     Camera,
+    FilePath,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

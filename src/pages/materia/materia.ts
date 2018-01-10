@@ -21,7 +21,7 @@ export class MateriaPage {
   }
 
   abrirModalMateria(materia?: Object) {
-    const modal = this.modal.create('ModalMateriaPage', {materia: materia});
+    const modal = this.modal.create('ModalMateriaPage', { materia: materia });
 
     modal.onWillDismiss((data) => {
 
@@ -30,6 +30,10 @@ export class MateriaPage {
     })
 
     modal.present();
+  }
+
+  abrirGaleria(materia: string) {
+    this.navCtrl.push("AlbumGaleriaPage", { nome: materia });
   }
 
   // Funcao usada para quando o cliente "Press" na materia
@@ -72,14 +76,5 @@ export class MateriaPage {
     actionSheet.present();
   }
 
-  async buscarMaterias() {
-    let ret;
-    try {
-      ret = await this.dataBase.getMaterias();
-      return ret;
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
 }

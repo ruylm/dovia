@@ -5,23 +5,55 @@
 </ion-header> -->
 
 
-<ion-content padding>
+<ion-content>
   <ion-slides pager>
 
-    <ion-slide class="slide_image" *ngFor="let slide of slides">
-      <img [src]="slide.image" />
-      <h2 [innerHTML]="slide.title"></h2>
-      <p [innerHTML]="slide.description"></p>
+    <ion-slide class="slide_font" style="background-image: url(assets/imgs/fundo-intro.jpg)">
+      <h2>Bem vindo ao ClasShot!</h2>
+      <p>O
+        <b>ClasShot</b> é um app para ajuda-lo nos seus estudos.</p>
     </ion-slide>
 
-    <ion-slide class="slide_image">
-      <img src="assets/imgs/intro05.png" />
+    <ion-slide class="slide_font" style="background-image: url(assets/imgs/fundo-intro-cadastro.jpg)">
+      <div id="cadastro" style="margin-top: -35%;">
+      <h2>Cadastro de Matérias</h2>
+      <p>Nesse menu é possível o cadastro de suas matérias e a grade de horarios, para que as fotos sejam armazenadas conforme
+        foram cadastradas.</p>
+      </div>
+    </ion-slide>
+
+    <ion-slide class="slide_font" style="background-image: url(assets/imgs/fundo-intro-camera.jpg)">
+      <div id="foto" style="margin-top: -70%;">
+      <h2>Foto</h2>
+      <p>A opção
+        <b>Foto</b> é utilizada para tirar um foto do quadro com a matéria passada, para evitar de ter que escrever em seu caderno.</p>
+      </div>
+    </ion-slide>
+
+    <ion-slide style="background-image: url(assets/imgs/fundo-intro-album.jpg)">
+      <div id="album" style="width: 260px;">
+        <h2>Album</h2>
+        <p>Na opção
+          <b>Album</b> voce irá encontrar todas as suas fotos separadas por materias para poder estudar futuramente.</p>
+      </div>
+    </ion-slide>
+
+    <ion-slide style="background-image: url(assets/imgs/fundo-intro-pronto.jpg)">
+      <h2>Pronto para Iniciar?</h2>
+      <button ion-button large clear icon-end color="branco" (click)="irParaTabs()">
+        Continue
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+    </ion-slide>
+
+    <!-- <ion-slide class="slide_image">
+      <img src="assets/imgs/fundo-intro.jpg" />
       <h2>Pronto para Iniciar?</h2>
       <button ion-button large clear icon-end color="primary" (click)="irParaTabs()">
         Continue
         <ion-icon name="arrow-forward"></ion-icon>
       </button>
-    </ion-slide>
+    </ion-slide> -->
 
   </ion-slides>
 </ion-content>
