@@ -1,0 +1,19 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Histórico</ion-title>
+  </ion-navbar>
+  
+</ion-header>
+
+
+<ion-content>
+  
+  <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+  <ion-list>
+    <ion-item *ngFor="let item of items" (press)="exibirAcoes(item)" (click)="visualizarNotificacao(item)">
+      {{ item }}
+    </ion-item>
+  </ion-list>
+
+</ion-content>

@@ -6,54 +6,59 @@
 
 
 <ion-content>
-  <ion-slides pager>
+  <ion-slides (ionSlideDidChange)="slideChanged()" pager>
 
-    <ion-slide class="slide_font" style="background-image: url(assets/imgs/fundo-intro.jpg)">
-      <h2>Bem vindo ao ClasShot!</h2>
-      <p>O
-        <b>ClasShot</b> é um app para ajuda-lo nos seus estudos.</p>
+    <ion-slide class="slide_font" style="padding: 10px; background-color: #C77A18">
+      <img src="assets/imgs/logo_classnap.png" class="slide_image_logo" />
+      <br>
+      <p>ClasSnap é um aplicativo feito para ajudar na organização dos estudos.
+      </p>
+      <p>Primeiramente, usando a opção
+        <b>Matérias,</b>
+        deve-se criar uma
+        <b>Grade Horária,</b>
+        adicionando todas as matérias e seus respectivos dias horários
+      </p>
+      <br>
+      <img src="assets/imgs/botao_album_texto.png" class="slide-image" />
     </ion-slide>
 
-    <ion-slide class="slide_font" style="background-image: url(assets/imgs/fundo-intro-cadastro.jpg)">
-      <div id="cadastro" style="margin-top: -35%;">
-      <h2>Cadastro de Matérias</h2>
-      <p>Nesse menu é possível o cadastro de suas matérias e a grade de horarios, para que as fotos sejam armazenadas conforme
-        foram cadastradas.</p>
-      </div>
+    <ion-slide class="slide_font" style="padding: 10px; background-color: #289543">
+      <img src="assets/imgs/logo_classnap.png" class="slide_image_logo" />
+      <br>
+      <p>Quando o usuário estiver em aula, acessar a opção
+        <b>Camera</b> e tirar uma foto, ClasSnap irá salvar automaticamente a imagem na pasta da matéria criada para aquele
+        horário.
+      </p>
+      <p>Assim, o usuário terá cada foto salva em sua devida pasta de acordo com o horário e o dia em que a foto for tirada.
+      </p>
+      <img style="width: 35%;" src="assets/imgs/botao_camera_texto.png" class="slide-image" />
     </ion-slide>
 
-    <ion-slide class="slide_font" style="background-image: url(assets/imgs/fundo-intro-camera.jpg)">
-      <div id="foto" style="margin-top: -70%;">
-      <h2>Foto</h2>
-      <p>A opção
-        <b>Foto</b> é utilizada para tirar um foto do quadro com a matéria passada, para evitar de ter que escrever em seu caderno.</p>
-      </div>
+    <ion-slide class="slide_font" style="padding: 10px; background-color: #C1251A">
+      <img src="assets/imgs/logo_classnap.png" class="slide_image_logo" />
+      <br>
+      <p>Cada vez que uma foto for tirada fora de qualquer horário previsto na
+        <b>Grade Horária,</b>
+        ClasSnap irá salvar essa imagem na pasta
+        <b>Extra.</b>
+      </p>
+      <p>Caso o usuário queira tirar uma foto e salva-la em uma pasta diferente da pasta do horário em que a Foto esta sendo
+        tirada, o usuário poderá usar a opção
+        <b>Foto Extra.</b>
+      </p>
+      <img src="assets/imgs/botao_foto_extra_texto.png" class="slide-image" />
     </ion-slide>
 
-    <ion-slide style="background-image: url(assets/imgs/fundo-intro-album.jpg)">
-      <div id="album" style="width: 260px;">
-        <h2>Album</h2>
-        <p>Na opção
-          <b>Album</b> voce irá encontrar todas as suas fotos separadas por materias para poder estudar futuramente.</p>
-      </div>
+    <ion-slide on-drag-left="ruy2()" class="slide_font" style="padding: 10px; background-color: #4D398A">
+      <img src="assets/imgs/logo_classnap.png" class="slide_image_logo" />
+      <br>
+      <p>Há, ainda, a opção
+        <b>Calendário,</b> onde o usuário poderá cadastrar as provas e trabalhos de acordo com suas datas e, assim, ClasSnap
+        irá notifica-lo toda vez que uma dessas atividades estiver para vencer.
+      </p>
+      <img src="assets/imgs/botao_calendario_texto.png" class="slide-image" />
     </ion-slide>
-
-    <ion-slide style="background-image: url(assets/imgs/fundo-intro-pronto.jpg)">
-      <h2>Pronto para Iniciar?</h2>
-      <button ion-button large clear icon-end color="branco" (click)="irParaTabs()">
-        Continue
-        <ion-icon name="arrow-forward"></ion-icon>
-      </button>
-    </ion-slide>
-
-    <!-- <ion-slide class="slide_image">
-      <img src="assets/imgs/fundo-intro.jpg" />
-      <h2>Pronto para Iniciar?</h2>
-      <button ion-button large clear icon-end color="primary" (click)="irParaTabs()">
-        Continue
-        <ion-icon name="arrow-forward"></ion-icon>
-      </button>
-    </ion-slide> -->
 
   </ion-slides>
 </ion-content>

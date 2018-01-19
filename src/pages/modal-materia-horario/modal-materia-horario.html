@@ -16,11 +16,11 @@
     </ion-list-header>
     <ion-item>
       <ion-label>Início</ion-label>
-      <ion-datetime displayFormat="hh:mm A" [(ngModel)]="horario.inicio"></ion-datetime>
+      <ion-datetime displayFormat="HH:mm" [(ngModel)]="horario.inicio"></ion-datetime>
     </ion-item>
     <ion-item>
       <ion-label>Fim</ion-label>
-      <ion-datetime displayFormat="hh:mm A" [(ngModel)]="horario.fim"></ion-datetime>
+      <ion-datetime displayFormat="HH:mm" [(ngModel)]="horario.fim"></ion-datetime>
     </ion-item>
   </ion-list>
 
@@ -29,19 +29,19 @@
     </ion-list-header>
 
     <div class="weekDays-selector" style="text-align: center">
-      <input type="checkbox" id="weekday-sun" [(ngModel)]="horario.dia.dom" class="weekday" />
+      <input type="checkbox" id="weekday-sun" [(ngModel)]="horario.dom" class="weekday" />
       <label for="weekday-sun">D</label>
-      <input type="checkbox" id="weekday-mon" [(ngModel)]="horario.dia.seg" class="weekday" />
+      <input type="checkbox" id="weekday-mon" [(ngModel)]="horario.seg" class="weekday" />
       <label for="weekday-mon">S</label>
-      <input type="checkbox" id="weekday-tue" [(ngModel)]="horario.dia.ter" class="weekday" />
+      <input type="checkbox" id="weekday-tue" [(ngModel)]="horario.ter" class="weekday" />
       <label for="weekday-tue">T</label>
-      <input type="checkbox" id="weekday-wed" [(ngModel)]="horario.dia.qua" class="weekday" />
+      <input type="checkbox" id="weekday-wed" [(ngModel)]="horario.qua" class="weekday" />
       <label for="weekday-wed">Q</label>
-      <input type="checkbox" id="weekday-thu" [(ngModel)]="horario.dia.qui" class="weekday" />
+      <input type="checkbox" id="weekday-thu" [(ngModel)]="horario.qui" class="weekday" />
       <label for="weekday-thu">Q</label>
-      <input type="checkbox" id="weekday-fri" [(ngModel)]="horario.dia.sex" class="weekday" />
+      <input type="checkbox" id="weekday-fri" [(ngModel)]="horario.sex" class="weekday" />
       <label for="weekday-fri">S</label>
-      <input type="checkbox" id="weekday-sat" [(ngModel)]="horario.dia.sab" class="weekday" />
+      <input type="checkbox" id="weekday-sat" [(ngModel)]="horario.sab" class="weekday" />
       <label for="weekday-sat">S</label>
     </div>
 

@@ -26,8 +26,47 @@
         width: 90%;
       }
 
+      .vertical-text {
+        transform: rotate(270deg);
+        transform-origin: left bottom 0;
+        margin-left: 10px;
+      }
+
       .toast {
         text-align:center;
        }
+
+       .dovia {
+        background-color: green;
+        transform: rotate(270deg);
+        overflow: hidden;
+        color: white;
+        margin-right: -60%;
+        /* margin-left: 0%; */
+        margin-top: -75%;
+        text-align: center;
+        border-radius: 5px;
+      }
+
+      div.redonda {
+        border: 1px solid gray;
+        //border-radius: 5px;
+    }
+    .item.item-trns {
+      border-color: rgba(0, 0, 0, 0);
+        background-color: rgba(0, 0, 0, 0);
+    background: -moz-linear-gradient(top, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.39) 56%, rgba(204,51,51,0.07) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(255,255,255,0.8) 0%,rgba(255,255,255,0.39) 56%,rgba(204,51,51,0.07) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(255,255,255,0.8) 0%,rgba(255,255,255,0.39) 56%,rgba(204,51,51,0.07) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ccffffff', endColorstr='#12cc3333',GradientType=0 ); /* IE6-9 */
+    }
+
+    .alertCustomCss{
+      background-color: white;
+      color: blue;
+      button{
+          color: blue;
+      }
+    }
     
     }

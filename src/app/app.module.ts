@@ -16,6 +16,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { File } from '@ionic-native/file';
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
+import { CalendarModule } from 'ionic3-calendar-en';
+
+//import { NgCalendarModule } from 'ionic2-calendar';
+//import { AddEventPage } from '../pages/add-event/add-event';
 
 @NgModule({
   declarations: [
@@ -30,6 +34,7 @@ import { Camera } from '@ionic-native/camera';
   ],
   imports: [
     BrowserModule,
+    CalendarModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],

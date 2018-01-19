@@ -60,8 +60,9 @@ export class AlbumGaleriaPage {
           let dirFoto = dado.nativeURL.substr(0, dado.nativeURL.lastIndexOf('/') + 1);
 
           let imp: boolean = (fotoImportante === "1");
-          let dat: string = date.toLocaleString();
-          //let per: string = "1 dia atras";
+
+          let dat: string = date.toLocaleDateString();
+
           let per: string = this.verificaTempoDaFoto(nomeSemImportant);
           let dSemana: string = this.verificaDiaDaSemana(nomeSemImportant);
 
@@ -199,34 +200,34 @@ export class AlbumGaleriaPage {
 
         if (quantidadeDias === 0) { return ("Hoje") }
         else if (quantidadeDias === 1) { return ("Ontem") }
-        else if (quantidadeDias === 2) { return ("Há 2 dias atrás") }
-        else if (quantidadeDias === 3) { return ("Há 3 dias atrás") }
-        else if (quantidadeDias === 4) { return ("Há 4 dias atrás") }
-        else if (quantidadeDias === 5) { return ("Há 5 dias atrás") }
-        else if (quantidadeDias === 6) { return ("Há 6 dias atrás") }
-        else if (quantidadeDias === 7) { return ("Há 7 dias atrás") }
-        else if (quantidadeDias > 7 && quantidadeDias < 15) { return ("Há 1 semana atrás") }
-        else if (quantidadeDias > 14 && quantidadeDias < 22) { return ("Há 2 semanas atrás") }
-        else if (quantidadeDias > 21 && quantidadeDias < 28) { return ("Há 3 semanas atrás") }
-        else if (quantidadeDias > 27 && quantidadeDias < 32) { return ("Há 4 semanas atratrásas") }
+        else if (quantidadeDias === 2) { return ("Há 2 dias") }
+        else if (quantidadeDias === 3) { return ("Há 3 dias") }
+        else if (quantidadeDias === 4) { return ("Há 4 dias") }
+        else if (quantidadeDias === 5) { return ("Há 5 dias") }
+        else if (quantidadeDias === 6) { return ("Há 6 dias") }
+        else if (quantidadeDias === 7) { return ("Há 7 dias") }
+        else if (quantidadeDias > 7 && quantidadeDias < 15) { return ("Há 1 semana") }
+        else if (quantidadeDias > 14 && quantidadeDias < 22) { return ("Há 2 semanas") }
+        else if (quantidadeDias > 21 && quantidadeDias < 28) { return ("Há 3 semanas") }
+        else if (quantidadeDias > 27 && quantidadeDias < 32) { return ("Há 4 semanas") }
       }
       // Mes diferente
       else {
 
         let quantidadeMeses: number = Number((mesAtual - mesFoto));
 
-        if (quantidadeMeses === 1) { return ("Há 1 mes atrás") }
-        else if (quantidadeMeses === 2) { return ("Há 2 meses atrás") }
-        else if (quantidadeMeses === 3) { return ("Há 3 meses atrás") }
-        else if (quantidadeMeses === 4) { return ("Há 4 meses atrás") }
-        else if (quantidadeMeses === 5) { return ("Há 5 meses atrás") }
-        else if (quantidadeMeses === 6) { return ("Há 6 meses atrás") }
-        else if (quantidadeMeses === 7) { return ("Há 7 meses atrás") }
-        else if (quantidadeMeses === 8) { return ("Há 8 meses atrás") }
-        else if (quantidadeMeses === 9) { return ("Há 9 meses atrás") }
-        else if (quantidadeMeses === 10) { return ("Há 10 meses atrás") }
-        else if (quantidadeMeses === 11) { return ("Há 11 meses atrás") }
-        else if (quantidadeMeses === 12) { return ("Há 12 meses atrás") }
+        if (quantidadeMeses === 1) { return ("Há 1 mes") }
+        else if (quantidadeMeses === 2) { return ("Há 2 meses") }
+        else if (quantidadeMeses === 3) { return ("Há 3 meses") }
+        else if (quantidadeMeses === 4) { return ("Há 4 meses") }
+        else if (quantidadeMeses === 5) { return ("Há 5 meses") }
+        else if (quantidadeMeses === 6) { return ("Há 6 meses") }
+        else if (quantidadeMeses === 7) { return ("Há 7 meses") }
+        else if (quantidadeMeses === 8) { return ("Há 8 meses") }
+        else if (quantidadeMeses === 9) { return ("Há 9 meses") }
+        else if (quantidadeMeses === 10) { return ("Há 10 meses") }
+        else if (quantidadeMeses === 11) { return ("Há 11 meses") }
+        else if (quantidadeMeses === 12) { return ("Há 12 meses") }
 
       }
 
@@ -234,8 +235,11 @@ export class AlbumGaleriaPage {
 
       let quantidadeAnos: number = Number((anoAtual - anoFoto));
       if (quantidadeAnos === 1) { return ("Ano passado") }
-      else if (quantidadeAnos === 2) { return ("Há 2 anos atrás") }
-      else { return ("Há mais de 2 anos") }
+      else if (quantidadeAnos === 2) { return ("Há 2 anos") }
+      else if (quantidadeAnos === 2) { return ("Há 3 anos") }
+      else if (quantidadeAnos === 2) { return ("Há 4 anos") }
+      else if (quantidadeAnos === 2) { return ("Há 5 anos") }
+      else { return ("Há mais de 5 anos") }
     }
 
   }

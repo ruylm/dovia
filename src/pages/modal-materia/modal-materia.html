@@ -10,69 +10,77 @@
 
 <ion-content padding>
 
-  <div>
-    <ion-list>
-      <!-- <ion-list-header>
+  <ion-list>
+    <!-- <ion-list-header>
       <b>MATÉRIA</b>
     </ion-list-header> -->
-      <ion-item>
-        <ion-label floating>Matéria</ion-label>
-        <ion-input type="text" [(ngModel)]="materia.nome"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label floating>Professor</ion-label>
-        <ion-input type="text" [(ngModel)]="materia.professor"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label floating>E-mail</ion-label>
-        <ion-input type="email" [(ngModel)]="materia.email"></ion-input>
-      </ion-item>
-    </ion-list>
+    <ion-item>
+      <ion-label>Matéria</ion-label>
+      <ion-input type="text" [(ngModel)]="materia.nome"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Professor</ion-label>
+      <ion-input type="text" [(ngModel)]="materia.professor"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>E-mail</ion-label>
+      <ion-input type="email" [(ngModel)]="materia.email"></ion-input>
+    </ion-item>
+  </ion-list>
 
-    <ion-scroll direction="y" scrollY="true" style="height: 190px">
-      <ion-list scroll="true">
+  <!-- <ion-scroll direction="y" scrollY="true" style="height: 190px"> -->
+  <!-- <ion-list scroll="true"> -->
+  <ion-list>
 
-        <ion-list-header>
-          <ion-grid>
-            <ion-row>
-              <ion-col>
-                  <b>HORÁRIOS</b>
-              </ion-col>
-              <ion-col offset-6 col-auto>
-                <button ion-fab (click)="abrirNovoHorario()" style="height: 25px; width: 25px" >
-                  <ion-icon name="add"></ion-icon>
-                </button>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-list-header>
+    <ion-list-header>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <b>HORÁRIOS</b>
+          </ion-col>
+          <ion-col offset-6 col-auto>
+            <button ion-fab (click)="abrirNovoHorario()" style="height: 25px; width: 25px">
+              <ion-icon name="add"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-list-header>
 
-        <ion-item (press)="exibirAcoesHorario(aula)" *ngFor="let aula of listaHorario">
-          <ion-icon name="ios-school" item-start></ion-icon>
-          <!-- <h2 [innerHTML]="horario.inicio"></h2>
+    <ion-item (press)="exibirAcoesHorario(aula)" *ngFor="let aula of listaHorario">
+      <ion-icon name="ios-school" item-start></ion-icon>
+      <!-- <h2 [innerHTML]="horario.inicio"></h2>
           <h3 [innerHTML]="horario.fim"></h3> -->
 
-          {{aula.inicio}} - {{aula.fim}}
-          <br> {{ aula.diasFormatados }}
+      {{aula.inicio}} - {{aula.fim}}
+      <br> {{ aula.diasFormatados }}
 
-        </ion-item>
+    </ion-item>
 
-      </ion-list>
-    </ion-scroll>
-  </div>
+    <ion-item>
+      <button style="height: 32px;" ion-button (click)="salvarHorario()" full round>Save</button>
+    </ion-item>
 
-  <ion-footer>
+  </ion-list>
+  <!-- </ion-scroll> -->
+
+
+
+
+
+
+  <!-- <ion-footer style="position: relative">
     <ion-toolbar no-border-top>
       <ion-grid>
 
         <ion-row>
-          <ion-col col-12>
+          <ion-col>
             <button ion-button full (click)="salvarHorario()">Salvar</button>
           </ion-col>
         </ion-row>
 
       </ion-grid>
     </ion-toolbar>
-  </ion-footer>
+  </ion-footer> -->
 
 </ion-content>

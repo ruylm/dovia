@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, ModalController, ActionSheetController, Platform } from 'ionic-angular';
 import { DataBaseProvider } from '../../providers/database/database';
+import { File } from '@ionic-native/file';
 
 
 @IonicPage()
@@ -12,11 +13,12 @@ import { DataBaseProvider } from '../../providers/database/database';
   ]
 })
 export class MateriaPage {
-
+  
+  private pathNovo: string = this.file.dataDirectory + "csfotos/";
   public materiasCadastradas = {};
   public platform: Platform;
 
-  constructor(public navCtrl: NavController, public modal: ModalController, public actionsheetCtrl: ActionSheetController, private dataBase: DataBaseProvider) {
+  constructor(public navCtrl: NavController, public modal: ModalController, private file: File, public actionsheetCtrl: ActionSheetController, private dataBase: DataBaseProvider) {
     this.materiasCadastradas = dataBase.getMaterias();
   }
 
@@ -50,6 +52,7 @@ export class MateriaPage {
           handler: () => {
             console.log('Delete clicked');
             this.dataBase.removeMateria("id", materia.id);
+            this.removePastaMateria(materia.nome)
             this.materiasCadastradas = this.dataBase.getMaterias();
           }
         },
@@ -74,6 +77,15 @@ export class MateriaPage {
       ]
     });
     actionSheet.present();
+  }
+
+  async removePastaMateria(materiaNome) {
+    try {
+      //alert("Removendo Diretorio "+materiaNome);
+      await this.file.removeDir(this.pathNovo, materiaNome)
+    } catch (error) {
+      alert("Ocorreu um erro ao remover diretorio: " + error);
+    }
   }
 
 

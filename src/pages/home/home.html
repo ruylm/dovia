@@ -1,44 +1,102 @@
-<ion-header>
-  <ion-navbar hideBackButton>
-    <ion-title text-center>Class Shot</ion-title>
-  </ion-navbar>
-</ion-header>
-
-<ion-content class="card-background-page">
+<ion-content class="card-background-page" style="background: linear-gradient(#488aff, white); ">
 
   <ion-grid>
-    <ion-row align-items-center>
-      <ion-col col-12 align-self-start>
-        <button ion-button color="branco" class="button-menor" (click)="trocaPagina('FotoPage')">
-          <ion-card>
-            <img src="assets/imgs/foto.png" />
-          </ion-card>
-        </button>
-      </ion-col>
-      <!-- <ion-col>
-      <button ion-button color="branco" class="button-grande" (click)="trocaPagina('AlbumPage')" >
-        <ion-card>
-          <img src="assets/imgs/album.png" />
-        </ion-card>
-      </button>
-    </ion-col> -->
-    </ion-row>
-    <ion-row>
-      <ion-col col-6 align-self-center>
-        <button ion-button color="branco" class="button-grande" (click)="trocaPagina('MateriaPage')">
-          <ion-card>
-            <img src="assets/imgs/album.png" />
-          </ion-card>
-        </button>
-      </ion-col>
-      <ion-col col-6 align-self-center>
-        <button ion-button color="branco" class="button-grande" (click)="trocaPagina('ConfigPage')">
-          <ion-card>
-            <img src="assets/imgs/config.png" />
-          </ion-card>
-        </button>
+
+    <ion-row style="height: 30px; width: 97%; margin-left: 2%; ">
+      <ion-col col-12 style="text-align: right;">
+        <a style="color: white; font-size: 21px;">classnap</a>
       </ion-col>
     </ion-row>
+
+    <ion-row style="height: 115px">
+      <ion-col col-4>
+        <button ion-button style="width: 100%; height: 100%; background-color: #289543;" (click)="trocaPagina('FotoPage')">
+          <img style="height: 40%; width: 70%;" src="assets/imgs/botao_camera_texto.png" />
+        </button>
+      </ion-col>
+
+      <ion-col col-5>
+        <button style="width: 100%; height: 100%; background-color: #C77A18;" ion-button icon-only (click)="trocaPagina('MateriaPage')">
+          <img style="height: 45%; width: 28%;" src="assets/imgs/botao_album_texto.png" />
+        </button>
+      </ion-col>
+
+      <!-- Inicio Propaganda Prensadao -->
+      <ion-col col-3>
+        <button ion-button icon-only style="width: 75px; height: 185px; background-color: black;">
+          <img onclick="window.open('http://www.oprensadao.com.br', '_system');" style="transform: rotate(270deg); height: 60%; width: 180%; max-width: 200%;" src="assets/imgs/prensa.png" />
+        </button>
+      </ion-col>
+      <!-- Fim Propaganda Prensadao -->
+    </ion-row>
+
+    <ion-row style="height: 80px">
+      <ion-col col-4>
+        <button ion-button style="width: 100%; height: 100%; background-color: #C1251A;" (click)="trocaPagina('FotoExtraPage')">
+          <img style="height: 50%; width: 65%;" src="assets/imgs/botao_foto_extra_texto.png" />
+        </button>
+      </ion-col>
+
+      <ion-col col-5>
+        <button style="width: 100%; height: 100%; background-color: #4D398A;" ion-button icon-only (click)="trocaPagina('CalendarioPage')">
+          <img style="height: 55%; width: 25%;" src="assets/imgs/botao_calendario_texto.png" />
+        </button>
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row style="height: 30px; width: 97%; margin-top: 8px; margin-bottom: -10px; ">
+      <ion-col col-6>
+        <a style="color: black;">Notificações</a>
+      </ion-col>
+      <ion-col style="text-align: right;">
+        <a (click)="verTodasAnotacoes()" style="color: black; font-size: 12px;">Ver todas</a>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="height: 155px">
+      <ion-col col-12 align-self-top>
+        <div style="height: 100%">
+          <ion-scroll scrollX="true" scrollY="true" style="height: 100%;"> 
+            <!--  -->
+            <ion-list no-lines>
+              <ion-item no-lines class="item item-trns" (click)="visualizarNotificacao(item.msg)" *ngFor="let item of anotacoes" style="min-height: 0px; height: 35px; margin-left: -8px;">
+                <!-- 01/12/2018 - Prova de Matematica -->
+                <a *ngIf="item.hoje.indexOf('true') !== -1">
+                  <b style="color: black">
+                    <img style="height: 15px;" src="assets/imgs/icone_estrelinha.png" /> {{item.msg}}</b>
+                </a>
+                <p *ngIf="item.hoje.indexOf('true') === -1">{{item.msg}}</p>
+              </ion-item>
+            </ion-list>
+          </ion-scroll>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="height: 30px; width: 97%; margin-top: 8px; margin-bottom: -10px; ">
+      <ion-col col-12>
+        <a style="color: black;">Atividade recente</a>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="height: 135px">
+
+      <ion-col col-3 *ngFor="let item of fotosRecentes">
+        <img style="width: 100%; height: 100%" (click)="abrirFoto(item.foto)" src={{item.foto}} />
+        <p class="dovia">{{item.pasta}}</p>
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row style="height: 45px;">
+      <ion-col col-12>
+        <img style="height: 100%; width: 100%;" src="assets/imgs/prensadao.jpg" />
+      </ion-col>
+    </ion-row>
+
   </ion-grid>
+
+
 
 </ion-content>

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { TabsPage } from '../tabs/tabs';
+import { Slides } from 'ionic-angular';
 
 
 @IonicPage()
@@ -10,32 +11,43 @@ import { TabsPage } from '../tabs/tabs';
 })
 export class IntroPage {
 
-  slides = [
-    {
-      title: "Bem vindo ao ClasShot!",
-      description: "O <b>ClasShot</b> é um app para ajuda-lo nos seus estudos.",
-      image: "assets/imgs/fundo-intro.jpg",
-    },
-    {
-      title: "Cadastro de Matérias",
-      description: "Nesse menu é possível o cadastro de suas matérias e a grade de horarios, para que as fotos sejam armazenadas conforme foram cadastradas.",
-      image: "assets/imgs/fundo-intro.jpg",
-    },
-    {
-      title: "Foto",
-      description: "A opção <b>Foto</b> é utilizada para tirar um foto do quadro com a matéria passada, para evitar de ter que escrever em seu caderno.",
-      image: "assets/imgs/fundo-intro.jpg",
-    },
-    {
-      title: "Album",
-      description: "Na opção <b>Album</b> voce irá encontrar todas as suas fotos separadas por materias para poder estudar futuramente.",
-      image: "assets/imgs/fundo-intro.jpg",
-    }
-  ];
+  @ViewChild(Slides) slides: Slides;
+
+  // slides = [
+  //   {
+  //     title: "Bem vindo ao ClasSnap!",
+  //     description: "O <b>ClasSnap</b> é um app para ajuda-lo nos seus estudos.",
+  //     image: "assets/imgs/fundo-intro.jpg",
+  //   },
+  //   {
+  //     title: "Cadastro de Matérias",
+  //     description: "Nesse menu é possível o cadastro de suas matérias e a grade de horarios, para que as fotos sejam armazenadas conforme foram cadastradas.",
+  //     image: "assets/imgs/fundo-intro.jpg",
+  //   },
+  //   {
+  //     title: "Foto",
+  //     description: "A opção <b>Foto</b> é utilizada para tirar um foto do quadro com a matéria passada, para evitar de ter que escrever em seu caderno.",
+  //     image: "assets/imgs/fundo-intro.jpg",
+  //   },
+  //   {
+  //     title: "Album",
+  //     description: "Na opção <b>Album</b> voce irá encontrar todas as suas fotos separadas por materias para poder estudar futuramente.",
+  //     image: "assets/imgs/fundo-intro.jpg",
+  //   }
+  // ];
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
 
   }
+
+  slideChanged() {
+    let currentIndex = this.slides.getActiveIndex();
+    //alert('Current index is ' + currentIndex);
+    if(currentIndex === 4) {
+      this.navCtrl.push(TabsPage)
+    }
+  }
+
   irParaTabs() {
     this.navCtrl.push(TabsPage)
     // this.navCtrl.push(TabsPage).then(() => {

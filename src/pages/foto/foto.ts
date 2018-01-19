@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Tabs, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
+import { DataBaseProvider } from '../../providers/database/database';
 
 
 @IonicPage()
@@ -9,26 +10,27 @@ import { File } from '@ionic-native/file';
   selector: 'page-foto',
   templateUrl: 'foto.html',
   providers: [
-    Camera
+    Camera,
+    DataBaseProvider
   ]
 })
 export class FotoPage {
 
   private pastaExtra: string = "Extra";
   private pathNovo: string = this.file.dataDirectory + "csfotos/";
+  private retornoBDHorarios;
+  private tipoFoto;
   img = "";
   tab: Tabs;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public camera: Camera, private file: File, public toastCtrl: ToastController) {
-
+  constructor(public navCtrl: NavController, public navParams: NavParams, private dataBase: DataBaseProvider, public camera: Camera, private file: File, public toastCtrl: ToastController) {
   }
 
   // Esse metodo e executado sempre que a tela e exibida
   async ionViewWillEnter() {
-    // Criando diretorio "Extra" caso nao exista.
-    //await this.verificaDiretorio(this.pathInicial, this.pastaFotos);
-    //await this.verificaDiretorio(this.pathNovo, this.pastaExtra);
+    this.tipoFoto = this.dataBase.getTipoFoto();
     this.tab = this.navCtrl.parent;
+    this.retornoBDHorarios = this.dataBase.getMaterias();
     this.tirarFoto();
   }
 
@@ -44,22 +46,16 @@ export class FotoPage {
 
     this.camera.getPicture(options).then((imagePath) => {
 
-      // Pegar nome materia pelo horario
-      //let materia: string = "cs_" + "Extra";
-
       let pathAntigo = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
       let nomeAntigo = imagePath.substr(imagePath.lastIndexOf('/') + 1);
 
-
-      //let nomeNovo: string = this.createFileName();
-
-      // Verifica se diretorio existe e se nao existir, ja cria ele..
-      // this.verificaDiretorio(pathNovo, materia)
+      // Pegar nome materia pelo horario
+      let materia: string = this.validaHorarioCadastradoEmOutraMateria(this.retornoBDHorarios, nomeAntigo)
 
       // Movendo foto do diretorio padrao para o diretorio com o nome da materia
-      this.moveFileToLocalDir(pathAntigo, nomeAntigo, this.pathNovo + this.pastaExtra + "/", this.geraNomeFoto(nomeAntigo));
+      this.moveFileToLocalDir(pathAntigo, nomeAntigo, this.pathNovo + materia + "/", this.geraNomeFoto(nomeAntigo));
 
-      this.presentToast('Foto salva na matéria ' + this.pastaExtra.substr(this.pastaExtra.lastIndexOf('_') + 1));
+      this.presentToast('Foto salva na matéria ' + materia);
 
       this.tab.select(0);
 
@@ -102,6 +98,57 @@ export class FotoPage {
       }
     }
 
+  }
+
+  validaHorarioCadastradoEmOutraMateria(retornoBDHorarios, foto) {
+    
+    if (retornoBDHorarios.materias !== undefined || this.tipoFoto === 2) {
+
+      const diasSemana = ["dom", "seg", "ter", "qua", "qui", "sex", "sab"];
+      let nomeNovo = (foto.split(".", 1))
+      let n: number = Number(nomeNovo[0])
+      let dataFoto = new Date(n);
+      dataFoto.setSeconds(0);
+      let diaDaSemanaDaFoto = this.verificaDiaDaSemana(dataFoto);
+      let dataJaCadastradaInicio = new Date()
+      let dataJaCadastradaFim = new Date()
+
+      for (let materiaBD of retornoBDHorarios.materias) {
+        if (materiaBD.horario !== undefined) {
+          for (let horarioBD of materiaBD.horario) {
+            if (horarioBD[diaDaSemanaDaFoto]) {
+
+              dataJaCadastradaInicio.setHours(horarioBD["inicio"].split(":", 2)[0])
+              dataJaCadastradaInicio.setMinutes(horarioBD["inicio"].split(":", 2)[1])
+              dataJaCadastradaInicio.setSeconds(0);
+              dataJaCadastradaFim.setHours(horarioBD["fim"].split(":", 2)[0])
+              dataJaCadastradaFim.setMinutes(horarioBD["fim"].split(":", 2)[1])
+              dataJaCadastradaFim.setSeconds(0);
+
+              if ((dataFoto > dataJaCadastradaInicio) && (dataFoto < dataJaCadastradaFim)) {
+                // alert("Foto serve na materia: " + materiaBD.nome)
+                return materiaBD.nome;
+              }
+
+            }
+          }
+        }
+      }
+      return this.pastaExtra;
+    } else {
+      return this.pastaExtra;
+    }
+  }
+
+  verificaDiaDaSemana(dtFoto) {
+    let diaNumerico = dtFoto.getDay();
+    if (diaNumerico === 0) { return "dom" }
+    else if (diaNumerico === 1) { return "seg" }
+    else if (diaNumerico === 2) { return "ter" }
+    else if (diaNumerico === 3) { return "qua" }
+    else if (diaNumerico === 4) { return "qui" }
+    else if (diaNumerico === 5) { return "sex" }
+    else if (diaNumerico === 6) { return "sab" }
   }
 
   private presentToast(text) {
