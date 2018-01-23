@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, ViewController, ModalController, NavParams, ActionSheetController, ToastController } from 'ionic-angular';
+import { IonicPage, ViewController, ModalController, NavParams, ActionSheetController, ToastController, NavController, Platform } from 'ionic-angular';
 import { DataBaseProvider } from '../../providers/database/database';
 import { Md5 } from 'ts-md5/dist/md5';
 import { File } from '@ionic-native/file';
+declare var AdMob: any;
 
 @IonicPage()
 @Component({
@@ -14,6 +15,7 @@ import { File } from '@ionic-native/file';
 })
 export class ModalMateriaPage {
 
+  private admobId: any
   private pathNovo: string = this.file.dataDirectory + "csfotos/";
   private controleEditar;
   public materiaEditar;
@@ -44,7 +46,22 @@ export class ModalMateriaPage {
     ]
   }
 
-  constructor(private view: ViewController, public toastCtrl: ToastController, public actionsheetCtrl: ActionSheetController, private modal: ModalController, private dataBase: DataBaseProvider, params: NavParams, private file: File) {
+  constructor(private view: ViewController, private platform: Platform, public navCtrl: NavController, public toastCtrl: ToastController, public actionsheetCtrl: ActionSheetController, private modal: ModalController, private dataBase: DataBaseProvider, params: NavParams, private file: File) {
+
+    // Coisas do admob
+    this.platform = platform;
+    if (/(android)/i.test(navigator.userAgent)) {
+      this.admobId = {
+        banner: 'ca-app-pub-2668814124977579/1899067936',
+        interstitial: 'ca-app-pub-2668814124977579/7933815636'
+      };
+    } else if (/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
+      this.admobId = {
+        banner: 'ca-app-pub-2668814124977579/1899067936',
+        interstitial: 'ca-app-pub-2668814124977579/7933815636'
+      };
+    }
+    // Fim Coisas do admob
 
     this.materiaEditar = params.get('materia');
 
@@ -58,6 +75,16 @@ export class ModalMateriaPage {
       this.controleEditar = true;
       this.nomeAntesEditar = this.materiaEditar.nome;
     }
+  }
+
+  // Esse metodo e executado sempre que a tela e exibida
+  async ionViewWillEnter() {
+    try {await this.hideBanner('bottom');} catch (error) {}
+    await this.createBanner();
+  }
+
+  ionViewWillLeave() {
+    this.hideBanner('bottom');
   }
 
   fecharModalMateria() {
@@ -396,5 +423,37 @@ export class ModalMateriaPage {
     });
     toast.present();
   }
+
+  // INICIO DO BLOCO COM COISAS DO ADMOB
+  createBanner() {
+    this.platform.ready().then(() => {
+      if (AdMob) {
+        AdMob.createBanner({
+          adId: this.admobId.banner,
+          autoShow: true
+        });
+      }
+    });
+  }
+  // ANUNCIO FORMATO BANNER
+  showBanner(position) {
+    this.platform.ready().then(() => {
+      if (AdMob) {
+        var positionMap = {
+          "bottom": AdMob.AD_POSITION.BOTTOM_CENTER,
+          "top": AdMob.AD_POSITION.TOP_CENTER
+        };
+        AdMob.showBanner(positionMap[position.toLowerCase()]);
+      }
+    });
+  }
+  hideBanner(position) {
+    this.platform.ready().then(() => {
+      if (AdMob) {
+        AdMob.hideBanner();
+      }
+    });
+  }
+  // FIM DO BLOCO COM COISAS DO ADMOB
 
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, ToastController, Platform } from 'ionic-angular';
 import { Md5 } from 'ts-md5/dist/md5';
-
+declare var AdMob: any;
 
 @IonicPage()
 @Component({
@@ -9,6 +9,8 @@ import { Md5 } from 'ts-md5/dist/md5';
   templateUrl: 'modal-materia-horario.html',
 })
 export class ModalMateriaHorarioPage {
+
+  private admobId: any
 
   public md5: Md5;
   public horario = {
@@ -25,14 +27,65 @@ export class ModalMateriaHorarioPage {
     diasFormatados: ""
   }
 
-  constructor(public navCtrl: NavController, public toastCtrl: ToastController, public navParams: NavParams, private view: ViewController) {
-    //this.horario = new horario()
-    //alert(JSON.stringify(this.horario))
+  constructor(public navCtrl: NavController, private platform: Platform, public toastCtrl: ToastController, public navParams: NavParams, private view: ViewController) {
+    // Coisas do admob
+    this.platform = platform;
+    if (/(android)/i.test(navigator.userAgent)) {
+      this.admobId = {
+        banner: 'ca-app-pub-2668814124977579/1899067936',
+        interstitial: 'ca-app-pub-2668814124977579/7933815636'
+      };
+    } else if (/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
+      this.admobId = {
+        banner: 'ca-app-pub-2668814124977579/1899067936',
+        interstitial: 'ca-app-pub-2668814124977579/7933815636'
+      };
+    }
+    // Fim Coisas do admob
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ModalMateriaHorarioPage');
+  // Esse metodo e executado sempre que a tela e exibida
+  async ionViewWillEnter() {
+    try {await this.hideBanner('bottom');} catch (error) {}
+    await this.createBanner();
+    this.navCtrl.setRoot('TabsPage');
   }
+
+  ionViewWillLeave() {
+    this.hideBanner('bottom');
+  }
+
+  // INICIO DO BLOCO COM COISAS DO ADMOB
+  createBanner() {
+    this.platform.ready().then(() => {
+      if (AdMob) {
+        AdMob.createBanner({
+          adId: this.admobId.banner,
+          autoShow: true
+        });
+      }
+    });
+  }
+  // ANUNCIO FORMATO BANNER
+  showBanner(position) {
+    this.platform.ready().then(() => {
+      if (AdMob) {
+        var positionMap = {
+          "bottom": AdMob.AD_POSITION.BOTTOM_CENTER,
+          "top": AdMob.AD_POSITION.TOP_CENTER
+        };
+        AdMob.showBanner(positionMap[position.toLowerCase()]);
+      }
+    });
+  }
+  hideBanner(position) {
+    this.platform.ready().then(() => {
+      if (AdMob) {
+        AdMob.hideBanner();
+      }
+    });
+  }
+  // FIM DO BLOCO COM COISAS DO ADMOB
 
   fecharModalMateriaHorario() {
     this.view.dismiss();
@@ -42,11 +95,11 @@ export class ModalMateriaHorarioPage {
 
     let dataSalvandoInico1 = new Date();
     let dataSalvandoFim1 = new Date();
-    dataSalvandoInico1.setHours(Number (this.horario.inicio.split(":", 2)[0]))
-    dataSalvandoInico1.setMinutes(Number (this.horario.inicio.split(":", 2)[1]))
+    dataSalvandoInico1.setHours(Number(this.horario.inicio.split(":", 2)[0]))
+    dataSalvandoInico1.setMinutes(Number(this.horario.inicio.split(":", 2)[1]))
     dataSalvandoInico1.setSeconds(0);
-    dataSalvandoFim1.setHours(Number (this.horario.fim.split(":", 2)[0]))
-    dataSalvandoFim1.setMinutes(Number (this.horario.fim.split(":", 2)[1]))
+    dataSalvandoFim1.setHours(Number(this.horario.fim.split(":", 2)[0]))
+    dataSalvandoFim1.setMinutes(Number(this.horario.fim.split(":", 2)[1]))
     dataSalvandoFim1.setSeconds(0);
 
     if (dataSalvandoFim1 < dataSalvandoInico1) {

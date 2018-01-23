@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="br.com.dovia" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="br.com.dovia" version="2.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>clasSnap</name>
     <description>O melhor App para estudar.</description>
     <author email="doviabros@gmail.com">ClasSnap Inc.</author>
@@ -98,4 +98,6 @@
     <plugin name="com-sarriaroman-photoviewer" spec="^1.1.11" />
     <plugin name="cordova-plugin-datepicker" spec="^0.9.3" />
     <plugin name="cordova-plugin-calendar" spec="^5.0.0" />
+    <plugin name="cordova-plugin-admobpro" spec="^2.30.1" />
+    <plugin name="cordova-plugin-facebookads" spec="^4.23.2" />
 </widget>

@@ -31,6 +31,7 @@ export class FotoPage {
     this.tipoFoto = this.dataBase.getTipoFoto();
     this.tab = this.navCtrl.parent;
     this.retornoBDHorarios = this.dataBase.getMaterias();
+    this.navCtrl.setRoot('TabsPage');
     this.tirarFoto();
   }
 

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ViewController, Tabs, ModalController, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ViewController, Tabs, ModalController, ActionSheetController, Platform } from 'ionic-angular';
 import { DataBaseProvider } from '../../providers/database/database';
+declare var AdMob: any;
 
 @IonicPage()
 @Component({
@@ -12,6 +13,7 @@ import { DataBaseProvider } from '../../providers/database/database';
 })
 export class ConfigPage {
 
+  private admobId: any
   public dataTela;
   public anotacoesDoDia = [];
   public totalAnotacoesDoDia = 0;
@@ -24,9 +26,61 @@ export class ConfigPage {
   public descricao = "";
   tab: Tabs;
 
-  constructor(public navCtrl: NavController, public actionsheetCtrl: ActionSheetController, private modal: ModalController, private viewCtrl: ViewController, public navParams: NavParams, private dataBase: DataBaseProvider, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public actionsheetCtrl: ActionSheetController, private platform: Platform, private modal: ModalController, private viewCtrl: ViewController, public navParams: NavParams, private dataBase: DataBaseProvider, public alertCtrl: AlertController) {
     this.tab = this.navCtrl.parent;
+
+    // Coisas do admob
+    this.platform = platform;
+    if (/(android)/i.test(navigator.userAgent)) {
+      this.admobId = {
+        banner: 'ca-app-pub-2668814124977579/1899067936',
+        interstitial: 'ca-app-pub-2668814124977579/1899067936'
+      };
+    } else if (/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
+      this.admobId = {
+        banner: 'ca-app-pub-2668814124977579/1899067936',
+        interstitial: 'ca-app-pub-2668814124977579/1899067936'
+      };
+    }
+    // Fim Coisas do admob
   }
+   // INICIO DO BLOCO COM COISAS DO ADMOB
+   createBanner() {
+    this.platform.ready().then(() => {
+      if (AdMob) {
+        AdMob.createBanner({
+          adId: this.admobId.banner,
+          autoShow: true
+        });
+      }
+    });
+  }
+  // ANUNCIO FORMATO BANNER
+  showBanner(position) {
+    this.platform.ready().then(() => {
+      if (AdMob) {
+        var positionMap = {
+          "bottom": AdMob.AD_POSITION.BOTTOM_CENTER,
+          "top": AdMob.AD_POSITION.TOP_CENTER
+        };
+        AdMob.showBanner(positionMap[position.toLowerCase()]);
+      }
+    });
+  }
+  hideBanner(position) {
+    this.platform.ready().then(() => {
+      if (AdMob) {
+        AdMob.hideBanner();
+      }
+    });
+  }
+  // FIM DO BLOCO COM COISAS DO ADMOB
+
+  // Esse metodo e executado sempre que o usuario deixa essa tela
+  ionViewWillLeave() {
+    this.hideBanner('bottom');
+  }
+
 
   calendar = {
     mode: 'month',
@@ -35,8 +89,14 @@ export class ConfigPage {
 
   // Esse metodo e executado sempre que a tela e exibida
   async ionViewWillEnter() {
+    // Bloco Anuncio Admob
+    try {await this.hideBanner('bottom');} catch (error) {}
+    this.createBanner();
+    this.navCtrl.setRoot('TabsPage');
     this.anotacoesDoDia = await this.dataBase.getAnotacoesOrdenadas(3, this.diaSelecionado);
   }
+
+
 
   async onDaySelect(evento) {
     //alert(JSON.stringify(evento))
@@ -125,7 +185,7 @@ export class ConfigPage {
           icon: 'trash',
           handler: () => {
             console.log('Delete clicked');
-              this.removeAnotacao(this.anotacoesDoDia, item);
+            this.removeAnotacao(this.anotacoesDoDia, item);
           }
         },
         {

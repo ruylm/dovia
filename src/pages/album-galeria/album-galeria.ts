@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, ActionSheetController, Platform } from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
+declare var AdMob: any;
 
 @IonicPage()
 @Component({
@@ -14,6 +15,8 @@ import { PhotoViewer } from '@ionic-native/photo-viewer';
   ]
 })
 export class AlbumGaleriaPage {
+
+  private admobId: any
   menu: string = "todas";
 
   public fotos = [];
@@ -21,12 +24,33 @@ export class AlbumGaleriaPage {
   pasta: string = "";
   private pathNovo: string = this.file.dataDirectory + "csfotos/";
 
-  constructor(public navCtrl: NavController, private photoViewer: PhotoViewer, public actionsheetCtrl: ActionSheetController, public navParams: NavParams, private file: File, private viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, private platform: Platform, private photoViewer: PhotoViewer, public actionsheetCtrl: ActionSheetController, public navParams: NavParams, private file: File, private viewCtrl: ViewController) {
+    // Coisas do admob
+    this.platform = platform;
+    if (/(android)/i.test(navigator.userAgent)) {
+      this.admobId = {
+        banner: 'ca-app-pub-2668814124977579/1899067936',
+        interstitial: 'ca-app-pub-2668814124977579/7933815636'
+      };
+    } else if (/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
+      this.admobId = {
+        banner: 'ca-app-pub-2668814124977579/1899067936',
+        interstitial: 'ca-app-pub-2668814124977579/7933815636'
+      };
+    }
+    // Fim Coisas do admob
   }
 
   // Esse metodo e executado sempre que a tela e exibida
   async ionViewWillEnter() {
+    try {await this.hideBanner('bottom');} catch (error) {}
+    await this.createBanner();
+    this.navCtrl.setRoot('TabsPage');
     await this.buscarFotos()
+  }
+
+  ionViewWillLeave() {
+    this.hideBanner('bottom');
   }
 
   // Esse metodo e executado sempre que o usuario deixa essa tela
@@ -168,13 +192,13 @@ export class AlbumGaleriaPage {
   verificaDiaDaSemana(dtFoto) {
     let dataFoto = (new Date(dtFoto));
     let diaNumerico = dataFoto.getDay();
-    if (diaNumerico === 0){return "Domingo"}
-    else if (diaNumerico === 1){return "Segunda-Feira"}
-    else if (diaNumerico === 2){return "Terça-Feira"}
-    else if (diaNumerico === 3){return "Quarta-Feira"}
-    else if (diaNumerico === 4){return "Quinta-Feira"}
-    else if (diaNumerico === 5){return "Sexta-Feira"}
-    else if (diaNumerico === 6){return "Sábado"}
+    if (diaNumerico === 0) { return "Domingo" }
+    else if (diaNumerico === 1) { return "Segunda-Feira" }
+    else if (diaNumerico === 2) { return "Terça-Feira" }
+    else if (diaNumerico === 3) { return "Quarta-Feira" }
+    else if (diaNumerico === 4) { return "Quinta-Feira" }
+    else if (diaNumerico === 5) { return "Sexta-Feira" }
+    else if (diaNumerico === 6) { return "Sábado" }
   }
 
   verificaTempoDaFoto(dtFoto) {
@@ -244,5 +268,37 @@ export class AlbumGaleriaPage {
 
   }
 
+
+  // INICIO DO BLOCO COM COISAS DO ADMOB
+  createBanner() {
+    this.platform.ready().then(() => {
+      if (AdMob) {
+        AdMob.createBanner({
+          adId: this.admobId.banner,
+          autoShow: true
+        });
+      }
+    });
+  }
+  // ANUNCIO FORMATO BANNER
+  showBanner(position) {
+    this.platform.ready().then(() => {
+      if (AdMob) {
+        var positionMap = {
+          "bottom": AdMob.AD_POSITION.BOTTOM_CENTER,
+          "top": AdMob.AD_POSITION.TOP_CENTER
+        };
+        AdMob.showBanner(positionMap[position.toLowerCase()]);
+      }
+    });
+  }
+  hideBanner(position) {
+    this.platform.ready().then(() => {
+      if (AdMob) {
+        AdMob.hideBanner();
+      }
+    });
+  }
+  // FIM DO BLOCO COM COISAS DO ADMOB
 
 }
