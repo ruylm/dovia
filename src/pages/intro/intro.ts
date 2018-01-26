@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { TabsPage } from '../tabs/tabs';
 import { Slides } from 'ionic-angular';
+import { HomePage } from '../home/home';
 
 
 @IonicPage()
@@ -44,12 +44,12 @@ export class IntroPage {
     let currentIndex = this.slides.getActiveIndex();
     //alert('Current index is ' + currentIndex);
     if(currentIndex === 4) {
-      this.navCtrl.push(TabsPage)
+      this.navCtrl.push(HomePage)
     }
   }
 
   irParaTabs() {
-    this.navCtrl.push(TabsPage)
+    this.navCtrl.push(HomePage)
     // this.navCtrl.push(TabsPage).then(() => {
     //   const startIndex = this.navCtrl.getActive().index - 1;
     //   this.navCtrl.remove(startIndex, 1);

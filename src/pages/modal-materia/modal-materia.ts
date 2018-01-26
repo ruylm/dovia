@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ViewController, ModalController, NavParams, ActionSheetController, ToastController, NavController, Platform } from 'ionic-angular';
+import { IonicPage, ViewController, ModalController, NavParams, ActionSheetController, ToastController, NavController, Platform, AlertController } from 'ionic-angular';
 import { DataBaseProvider } from '../../providers/database/database';
 import { Md5 } from 'ts-md5/dist/md5';
 import { File } from '@ionic-native/file';
@@ -46,7 +46,7 @@ export class ModalMateriaPage {
     ]
   }
 
-  constructor(private view: ViewController, private platform: Platform, public navCtrl: NavController, public toastCtrl: ToastController, public actionsheetCtrl: ActionSheetController, private modal: ModalController, private dataBase: DataBaseProvider, params: NavParams, private file: File) {
+  constructor(private view: ViewController, public alertCtrl: AlertController, private platform: Platform, public navCtrl: NavController, public toastCtrl: ToastController, public actionsheetCtrl: ActionSheetController, private modal: ModalController, private dataBase: DataBaseProvider, params: NavParams, private file: File) {
 
     // Coisas do admob
     this.platform = platform;
@@ -79,12 +79,12 @@ export class ModalMateriaPage {
 
   // Esse metodo e executado sempre que a tela e exibida
   async ionViewWillEnter() {
-    try {await this.hideBanner('bottom');} catch (error) {}
-    await this.createBanner();
+    //try {await this.hideBanner('bottom');} catch (error) {}
+    //await this.createBanner();
   }
 
   ionViewWillLeave() {
-    this.hideBanner('bottom');
+    //this.hideBanner('bottom');
   }
 
   fecharModalMateria() {
@@ -339,15 +339,14 @@ export class ModalMateriaPage {
           icon: 'trash',
           handler: () => {
             console.log('Delete clicked');
-            if (!this.controleEditar) {
-              this.removeHorarioMemoria(this.listaHorario, "id", aula.id);
-            }
-            else {
-              this.removeHorarioMemoria(this.listaHorario, "id", aula.id);
-              this.salvarHorario("deleteItem");
-            }
-            // this.dataBase.removeHorario("nome", materia.nome);
-            // this.materiasCadastradas = this.dataBase.getMaterias();
+            this.showConfirm(aula);
+            // if (!this.controleEditar) {
+            //   this.removeHorarioMemoria(this.listaHorario, "id", aula.id);
+            // }
+            // else {
+            //   this.removeHorarioMemoria(this.listaHorario, "id", aula.id);
+            //   this.salvarHorario("deleteItem");
+            // }
           }
         },
         {
@@ -362,6 +361,35 @@ export class ModalMateriaPage {
       ]
     });
     actionSheet.present();
+  }
+
+  showConfirm(aula) {
+    let confirm = this.alertCtrl.create({
+      title: 'Excluir',
+      message: 'Deseja realmente excluir?',
+      buttons: [
+        {
+          text: 'Não',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Sim',
+          handler: () => {
+            //console.log('Agree clicked');
+            if (!this.controleEditar) {
+              this.removeHorarioMemoria(this.listaHorario, "id", aula.id);
+            }
+            else {
+              this.removeHorarioMemoria(this.listaHorario, "id", aula.id);
+              this.salvarHorario("deleteItem");
+            }
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
   removeHorarioMemoria(array, property, value) {

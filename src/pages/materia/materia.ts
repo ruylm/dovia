@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, ModalController, ActionSheetController, Tabs, Platform } from 'ionic-angular';
+import { IonicPage, NavController, ModalController, ActionSheetController, Tabs, Platform, AlertController } from 'ionic-angular';
 import { DataBaseProvider } from '../../providers/database/database';
 import { File } from '@ionic-native/file';
 
@@ -24,7 +24,7 @@ export class MateriaPage {
 
   tab: Tabs;
 
-  constructor(public navCtrl: NavController, private platform: Platform, public nav: NavController, public modal: ModalController, private file: File, public actionsheetCtrl: ActionSheetController, private dataBase: DataBaseProvider) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, private platform: Platform, public nav: NavController, public modal: ModalController, private file: File, public actionsheetCtrl: ActionSheetController, private dataBase: DataBaseProvider) {
 
     this.tab = this.navCtrl.parent;
 
@@ -48,14 +48,20 @@ export class MateriaPage {
   }
 
   // INICIO DO BLOCO COM COISAS DO ADMOB
-  // ANUNCIO FORMATO DE PAGINA INTEIRA
-  showInterstitial() {
+  createBanner() {
     this.platform.ready().then(() => {
       if (AdMob) {
-        AdMob.prepareInterstitial({
-          adId: this.admobId.interstitial,
+        AdMob.createBanner({
+          adId: this.admobId.banner,
           autoShow: true
         });
+      }
+    });
+  }
+  hideBanner(position) {
+    this.platform.ready().then(() => {
+      if (AdMob) {
+        AdMob.hideBanner();
       }
     });
   }
@@ -63,10 +69,13 @@ export class MateriaPage {
 
   // Esse metodo e executado sempre que a tela e exibida
   async ionViewWillEnter() {
-    //this.navCtrl.setRoot('HomePage');
-    await this.showInterstitial();
+    try {await this.hideBanner('bottom');} catch (error) {}
+    await this.createBanner();
   }
 
+  ionViewWillLeave() {
+    this.hideBanner('bottom');
+  }
 
   abrirModalMateria(materia?: Object) {
     const modal = this.modal.create('ModalMateriaPage', { materia: materia });
@@ -97,9 +106,10 @@ export class MateriaPage {
           icon: 'trash',
           handler: () => {
             console.log('Delete clicked');
-            this.dataBase.removeMateria("id", materia.id);
-            this.removePastaMateria(materia.nome)
-            this.materiasCadastradas = this.dataBase.getMaterias();
+            this.showConfirm(materia);
+            // this.dataBase.removeMateria("id", materia.id);
+            // this.removePastaMateria(materia.nome)
+            // this.materiasCadastradas = this.dataBase.getMaterias();
           }
         },
         {
@@ -123,6 +133,31 @@ export class MateriaPage {
       ]
     });
     actionSheet.present();
+  }
+
+  showConfirm(materia) {
+    let confirm = this.alertCtrl.create({
+      title: 'Excluir',
+      message: 'Deseja realmente excluir?',
+      buttons: [
+        {
+          text: 'Não',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Sim',
+          handler: () => {
+            console.log('Agree clicked');
+            this.dataBase.removeMateria("id", materia.id);
+            this.removePastaMateria(materia.nome)
+            this.materiasCadastradas = this.dataBase.getMaterias();
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
   async removePastaMateria(materiaNome) {

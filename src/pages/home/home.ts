@@ -57,7 +57,7 @@ export class HomePage {
       if (AdMob) {
         AdMob.createBanner({
           adId: this.admobId.banner,
-          autoShow: false
+          autoShow: true
         });
       }
     });
@@ -104,50 +104,45 @@ export class HomePage {
         if (AdMob) {
           AdMob.createBanner({
             adId: 'ca-app-pub-2668814124977579/1899067936',
-            autoShow: false
+            autoShow: true
           });
-          var positionMap = {
-            "bottom": AdMob.AD_POSITION.BOTTOM_CENTER,
-            "top": AdMob.AD_POSITION.TOP_CENTER
-          };
-          AdMob.showBanner(positionMap["bottom".toLowerCase()]);
         }
       } catch (error) { alert("Erroban2222: " + error) }
-    }, 19000);
+    }, 35000);
 
-    setInterval(function () {
-      try {
-        if (AdMob) {
-          AdMob.hideBanner();
-        }
-      } catch (error) { }
-      try {
-        if (AdMob) {
-          AdMob.createBanner({
-            adId: 'ca-app-pub-2668814124977579/1899067936',
-            autoShow: false
-          });
-          var positionMap = {
-            "bottom": AdMob.AD_POSITION.BOTTOM_CENTER,
-            "top": AdMob.AD_POSITION.TOP_CENTER
-          };
-          AdMob.showBanner(positionMap["top".toLowerCase()]);
-        }
-      } catch (error) { alert("Erroban2222: " + error) }
-    }, 20000);
+    // setInterval(function () {
+    //   try {
+    //     if (AdMob) {
+    //       AdMob.hideBanner();
+    //     }
+    //   } catch (error) { }
+    //   try {
+    //     if (AdMob) {
+    //       AdMob.createBanner({
+    //         adId: 'ca-app-pub-2668814124977579/1899067936',
+    //         autoShow: false
+    //       });
+    //       var positionMap = {
+    //         "bottom": AdMob.AD_POSITION.BOTTOM_CENTER,
+    //         "top": AdMob.AD_POSITION.TOP_CENTER
+    //       };
+    //       AdMob.showBanner(positionMap["top".toLowerCase()]);
+    //     }
+    //   } catch (error) { alert("Erroban2222: " + error) }
+    // }, 20000);
 
-    setInterval(function () {
-      try {
-        if (AdMob) {
-          if (AdMob) {
-            AdMob.prepareInterstitial({
-              adId: 'ca-app-pub-2668814124977579/7933815636',
-              autoShow: true
-            });
-          }
-        }
-      } catch (error) {alert("Erroban33333: " + error) }
-    }, 30000);
+    // setInterval(function () {
+    //   try {
+    //     if (AdMob) {
+    //       if (AdMob) {
+    //         AdMob.prepareInterstitial({
+    //           adId: 'ca-app-pub-2668814124977579/7933815636',
+    //           autoShow: true
+    //         });
+    //       }
+    //     }
+    //   } catch (error) {alert("Erroban33333: " + error) }
+    // }, 30000);
 
   }
   // FIM DO BLOCO COM COISAS DO ADMOB
@@ -179,8 +174,8 @@ export class HomePage {
   async ionViewWillEnter() {
     try {
       // Bloco Anuncio Admob
-      // await this.createBanner();
-      this.testeRuy();
+      await this.createBanner();
+      //this.testeRuy();
     } catch (error) {
       alert("Erroban: " + error)
     }
@@ -193,7 +188,6 @@ export class HomePage {
   }
 
   visualizarNotificacao(item) {
-    let mensagem = item.split("-", 2)[1]
     let alerta = this.alertCtrl.create({
       title: item.split("-", 2)[0],
       subTitle: item.split("-", 2)[1],
@@ -202,10 +196,6 @@ export class HomePage {
     alerta.present();
   }
 
-  recuperarUltimasFotos() {
-    alert("ARecuperando fotos atuais...")
-
-  }
 
   verTodasAnotacoes() {
     this.navCtrl.push("AnotacaoPage");

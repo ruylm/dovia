@@ -5,7 +5,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { IntroPage } from '../pages/intro/intro';
 import { ConfigProvider } from '../providers/config/config';
-import { TabsPage } from '../pages/tabs/tabs';
 
 @Component({
   templateUrl: 'app.html',
@@ -29,7 +28,7 @@ export class MyApp {
         this.rootPage = IntroPage;
         configProvider.setConfig(false);
       } else {
-        //this.rootPage = TabsPage;
+        //this.rootPage = HomePage;
         this.rootPage = IntroPage;
       }
 

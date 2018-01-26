@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Tabs, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
 import { DataBaseProvider } from '../../providers/database/database';
@@ -21,49 +21,87 @@ export class FotoPage {
   private retornoBDHorarios;
   private tipoFoto;
   img = "";
-  tab: Tabs;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private dataBase: DataBaseProvider, public camera: Camera, private file: File, public toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public navParams: NavParams, private dataBase: DataBaseProvider, public camera: Camera, private file: File, public toastCtrl: ToastController) {
   }
 
   // Esse metodo e executado sempre que a tela e exibida
   async ionViewWillEnter() {
     this.tipoFoto = this.dataBase.getTipoFoto();
-    this.tab = this.navCtrl.parent;
     this.retornoBDHorarios = this.dataBase.getMaterias();
-    this.navCtrl.setRoot('TabsPage');
+    //this.navCtrl.setRoot('TabsPage');
     this.tirarFoto();
   }
 
-  tirarFoto() {
+  async tirarFoto() {
 
     const options: CameraOptions = {
       quality: 50,
       destinationType: this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
+      correctOrientation: true,
       saveToPhotoAlbum: false
     }
 
-    this.camera.getPicture(options).then((imagePath) => {
+    let imagePath = await this.camera.getPicture(options);
+
+    // this.camera.getPicture(options).then((imagePath) => {
 
       let pathAntigo = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
       let nomeAntigo = imagePath.substr(imagePath.lastIndexOf('/') + 1);
 
       // Pegar nome materia pelo horario
-      let materia: string = this.validaHorarioCadastradoEmOutraMateria(this.retornoBDHorarios, nomeAntigo)
+      let materia: string = await this.validaHorarioCadastradoEmOutraMateria(this.retornoBDHorarios, nomeAntigo)
 
       // Movendo foto do diretorio padrao para o diretorio com o nome da materia
-      this.moveFileToLocalDir(pathAntigo, nomeAntigo, this.pathNovo + materia + "/", this.geraNomeFoto(nomeAntigo));
+      await this.moveFileToLocalDir(pathAntigo, nomeAntigo, this.pathNovo + materia + "/", this.geraNomeFoto(nomeAntigo));
 
-      this.presentToast('Foto salva na matéria ' + materia);
+      await this.presentToast('Foto salva na matéria ' + materia);
 
-      this.tab.select(0);
+      this.showConfirm();
 
-    }, (err) => {
-      this.tab.select(0);
-      //alert('Erro ao tirar foto: ' + err)
+      //this.tirarFoto();
+      
+      // this.tab.select(0);
+      //this.navCtrl.push("FotoPage");
+
+    // }, (err) => {
+    //   this.navCtrl.push("HomePage");
+    //   //alert('Erro ao tirar foto: ' + err)
+    // });
+
+  }
+
+  showConfirm() {
+    let confirm = this.alertCtrl.create({
+      title: 'Foto',
+      message: 'Tirar outra foto?',
+      buttons: [
+        {
+          text: 'Não',
+          handler: () => {
+            console.log('Disagree clicked');
+            this.navCtrl.pop();
+          }
+        },
+        {
+          text: 'Sim',
+          handler: () => {
+            console.log('Agree clicked');
+            this.tirarFoto();
+          }
+        }
+      ]
     });
+    confirm.present();
+  }
+
+  ionViewDidLoad() {
+    console.log("I'm alive!");
+  }
+  ionViewWillLeave() {
+    console.log("Looks like I'm about to leave :(");
   }
 
 
@@ -102,10 +140,9 @@ export class FotoPage {
   }
 
   validaHorarioCadastradoEmOutraMateria(retornoBDHorarios, foto) {
-    
+
     if (retornoBDHorarios.materias !== undefined || this.tipoFoto === 2) {
 
-      const diasSemana = ["dom", "seg", "ter", "qua", "qui", "sex", "sab"];
       let nomeNovo = (foto.split(".", 1))
       let n: number = Number(nomeNovo[0])
       let dataFoto = new Date(n);

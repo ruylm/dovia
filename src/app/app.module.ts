@@ -5,7 +5,7 @@ import { MyApp } from './app.component';
 
 import { AlbumPage } from '../pages/album/album';
 import { HomePage } from '../pages/home/home';
-import { TabsPage } from '../pages/tabs/tabs';
+//import { TabsPage } from '../pages/tabs/tabs';
 import { MateriaPage } from '../pages/materia/materia';
 import { ConfigPage } from '../pages/config/config';
 import { FotoPage } from '../pages/foto/foto';
@@ -29,8 +29,8 @@ import { CalendarModule } from 'ionic3-calendar-en';
     MateriaPage,
     ConfigPage,
     FotoPage,
-    IntroPage,
-    TabsPage
+    IntroPage
+    //TabsPage
   ],
   imports: [
     BrowserModule,
@@ -45,8 +45,8 @@ import { CalendarModule } from 'ionic3-calendar-en';
     MateriaPage,
     ConfigPage,
     FotoPage,
-    IntroPage,
-    TabsPage
+    IntroPage
+    //TabsPage
   ],
   providers: [
     StatusBar,

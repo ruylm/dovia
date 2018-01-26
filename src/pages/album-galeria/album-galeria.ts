@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ActionSheetController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, ActionSheetController, Platform, AlertController } from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
+import { DatePipe } from '@angular/common';
+
 declare var AdMob: any;
 
 @IonicPage()
@@ -16,6 +18,7 @@ declare var AdMob: any;
 })
 export class AlbumGaleriaPage {
 
+  public datePipe = new DatePipe("en-US");
   private admobId: any
   menu: string = "todas";
 
@@ -24,7 +27,7 @@ export class AlbumGaleriaPage {
   pasta: string = "";
   private pathNovo: string = this.file.dataDirectory + "csfotos/";
 
-  constructor(public navCtrl: NavController, private platform: Platform, private photoViewer: PhotoViewer, public actionsheetCtrl: ActionSheetController, public navParams: NavParams, private file: File, private viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, private platform: Platform, private photoViewer: PhotoViewer, public actionsheetCtrl: ActionSheetController, public navParams: NavParams, private file: File, private viewCtrl: ViewController) {
     // Coisas do admob
     this.platform = platform;
     if (/(android)/i.test(navigator.userAgent)) {
@@ -43,7 +46,7 @@ export class AlbumGaleriaPage {
 
   // Esse metodo e executado sempre que a tela e exibida
   async ionViewWillEnter() {
-    try {await this.hideBanner('bottom');} catch (error) {}
+    try { await this.hideBanner('bottom'); } catch (error) { }
     await this.createBanner();
     this.navCtrl.setRoot('TabsPage');
     await this.buscarFotos()
@@ -85,7 +88,7 @@ export class AlbumGaleriaPage {
 
           let imp: boolean = (fotoImportante === "1");
 
-          let dat: string = date.toLocaleDateString();
+          let dat: string = this.datePipe.transform(date.toLocaleDateString(), 'dd/MM/yyyy');
 
           let per: string = this.verificaTempoDaFoto(nomeSemImportant);
           let dSemana: string = this.verificaDiaDaSemana(nomeSemImportant);
@@ -131,7 +134,8 @@ export class AlbumGaleriaPage {
           role: 'destructive',
           icon: 'trash',
           handler: () => {
-            this.removerFoto(foto);
+            this.showConfirm(foto);
+            // this.removerFoto(foto);
           }
         },
         {
@@ -152,6 +156,29 @@ export class AlbumGaleriaPage {
       ]
     });
     actionSheet.present();
+  }
+
+  showConfirm(foto) {
+    let confirm = this.alertCtrl.create({
+      title: 'Excluir',
+      message: 'Deseja realmente excluir?',
+      buttons: [
+        {
+          text: 'Não',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Sim',
+          handler: () => {
+            console.log('Agree clicked');
+            this.removerFoto(foto);
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
   async marcarComoImportante(foto, opcao) {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ViewController, Tabs, ModalController, ActionSheetController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, Tabs, ModalController, ActionSheetController, Platform } from 'ionic-angular';
 import { DataBaseProvider } from '../../providers/database/database';
 declare var AdMob: any;
 
@@ -26,7 +26,7 @@ export class ConfigPage {
   public descricao = "";
   tab: Tabs;
 
-  constructor(public navCtrl: NavController, public actionsheetCtrl: ActionSheetController, private platform: Platform, private modal: ModalController, private viewCtrl: ViewController, public navParams: NavParams, private dataBase: DataBaseProvider, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public actionsheetCtrl: ActionSheetController, private platform: Platform, private modal: ModalController, public navParams: NavParams, private dataBase: DataBaseProvider, public alertCtrl: AlertController) {
     this.tab = this.navCtrl.parent;
 
     // Coisas do admob
@@ -44,8 +44,8 @@ export class ConfigPage {
     }
     // Fim Coisas do admob
   }
-   // INICIO DO BLOCO COM COISAS DO ADMOB
-   createBanner() {
+  // INICIO DO BLOCO COM COISAS DO ADMOB
+  createBanner() {
     this.platform.ready().then(() => {
       if (AdMob) {
         AdMob.createBanner({
@@ -90,7 +90,7 @@ export class ConfigPage {
   // Esse metodo e executado sempre que a tela e exibida
   async ionViewWillEnter() {
     // Bloco Anuncio Admob
-    try {await this.hideBanner('bottom');} catch (error) {}
+    try { await this.hideBanner('bottom'); } catch (error) { }
     this.createBanner();
     this.navCtrl.setRoot('TabsPage');
     this.anotacoesDoDia = await this.dataBase.getAnotacoesOrdenadas(3, this.diaSelecionado);
@@ -115,7 +115,6 @@ export class ConfigPage {
   }
 
   visualizarNotificacao(item) {
-    let mensagem = item.split("-", 2)[1]
     let alerta = this.alertCtrl.create({
       title: item.split("-", 2)[0],
       subTitle: item.split("-", 2)[1],
@@ -169,7 +168,7 @@ export class ConfigPage {
       msg: mensagemFormatada
     }
 
-    let retorno = await this.dataBase.insereAnotacao(gravar);
+    await this.dataBase.insereAnotacao(gravar);
     this.anotacoesDoDia = await this.dataBase.getAnotacoesOrdenadas(3, this.diaSelecionado);
     this.totalAnotacoesDoDia = this.anotacoesDoDia.length;
     this.descricao = "";
@@ -185,7 +184,8 @@ export class ConfigPage {
           icon: 'trash',
           handler: () => {
             console.log('Delete clicked');
-            this.removeAnotacao(this.anotacoesDoDia, item);
+            this.showConfirm(item);
+            // this.removeAnotacao(this.anotacoesDoDia, item);
           }
         },
         {
@@ -199,6 +199,29 @@ export class ConfigPage {
       ]
     });
     actionSheet.present();
+  }
+
+  showConfirm(item) {
+    let confirm = this.alertCtrl.create({
+      title: 'Excluir',
+      message: 'Deseja realmente excluir?',
+      buttons: [
+        {
+          text: 'Não',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Sim',
+          handler: () => {
+            console.log('Agree clicked');
+            this.removeAnotacao(this.anotacoesDoDia, item);
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
 

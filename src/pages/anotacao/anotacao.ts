@@ -41,7 +41,7 @@ export class AnotacaoPage {
 
   // Esse metodo e executado sempre que a tela e exibida
   async ionViewWillEnter() {
-    try {await this.hideBanner('bottom');} catch (error) {}
+    try { await this.hideBanner('bottom'); } catch (error) { }
     await this.createBanner();
     this.navCtrl.setRoot('TabsPage');
     this.initializeItems();
@@ -67,7 +67,6 @@ export class AnotacaoPage {
   }
 
   visualizarNotificacao(item) {
-    let mensagem = item.split("-", 2)[1]
     let alerta = this.alertCtrl.create({
       title: item.split("-", 2)[0],
       subTitle: item.split("-", 2)[1],
@@ -86,7 +85,8 @@ export class AnotacaoPage {
           icon: 'trash',
           handler: () => {
             console.log('Delete clicked');
-            this.removeAnotacao(this.items, item);
+            this.showConfirm(item);
+            // this.removeAnotacao(this.items, item);
           }
         },
         {
@@ -100,6 +100,29 @@ export class AnotacaoPage {
       ]
     });
     actionSheet.present();
+  }
+
+  showConfirm(item) {
+    let confirm = this.alertCtrl.create({
+      title: 'Excluir',
+      message: 'Deseja realmente excluir?',
+      buttons: [
+        {
+          text: 'Não',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Sim',
+          handler: () => {
+            console.log('Agree clicked');
+            this.removeAnotacao(this.items, item);
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
   async removeAnotacao(array, value) {
